@@ -48,6 +48,20 @@ sudo ln -s /etc/sv/seatd /var/service
 log_message "Añadiendo el usuario calamarino al grupo _seatd"
 sudo usermod -aG _seatd calamarino
 
+# Copiar el archivo hyprland.conf desde la misma carpeta del script a ~/.config/hypr/
+log_message "Copiando archivo de configuración hyprland.conf a ~/.config/hypr/"
+cp "$(dirname "$0")/hyprland.conf" /home/calamarino/.config/hypr/hyprland.conf
+chown calamarino:calamarino /home/calamarino/.config/hypr/hyprland.conf
+
+# Instalar fuentes necesarias
+log_message "Instalando fuentes necesarias..."
+sudo xbps-install -y fontconfig ttf-dejavu ttf-liberation
+
+# Mover imagen wallpaper.jpg a /home/calamarino/Pictures/ y renombrarla a background.jpg
+log_message "Moviendo wallpaper.jpg a /home/calamarino/Pictures/ y renombrando a background.jpg"
+mv "$(dirname "$0")/wallpaper.jpg" /home/calamarino/Pictures/background.jpg
+chown calamarino:calamarino /home/calamarino/Pictures/background.jpg
+
 log_message "Instalación y configuración completada."
 
 # Sugerir reinicio
