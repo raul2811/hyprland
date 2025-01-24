@@ -53,6 +53,16 @@ log_message "Copiando archivo de configuración hyprland.conf a ~/.config/hypr/"
 cp "$(dirname "$0")/hyprland.conf" /home/calamarino/.config/hypr/hyprland.conf
 chown calamarino:calamarino /home/calamarino/.config/hypr/hyprland.conf
 
+# Detectar la mejor resolución de la pantalla automáticamente
+log_message "Detectando la mejor resolución disponible..."
+BEST_RESOLUTION=$(xrandr | grep '*' | sort -nr | head -n 1 | awk '{print $1}')
+
+log_message "Mejor resolución detectada: $BEST_RESOLUTION"
+
+# Actualizar la configuración de Hyprland para usar la mejor resolución
+log_message "Actualizando archivo de configuración de Hyprland con la mejor resolución."
+sed -i "s/^monitor=.*/monitor=LVDS-1,$BEST_RESOLUTION,0x0/" /home/calamarino/.config/hypr/hyprland.conf
+
 # Instalar fuentes necesarias
 log_message "Instalando fuentes necesarias..."
 sudo xbps-install -y fontconfig ttf-dejavu ttf-liberation
